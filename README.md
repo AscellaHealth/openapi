@@ -1,4 +1,4 @@
-## AscellaHealth API
+# AscellaHealth API
 
 Welcome to the AscellaHealth API.
 
@@ -8,13 +8,13 @@ The base URL is: `https://api.ascellahealth.com/{version}`.
 
 To see a list of all available endpoints, please refer to our <a href="https://api.ascellahealth.com/swagger/index.html" target="_blank">API Endpoints page</a>. The documentation also lets you "try it out" on each endpoint directly within the page.
 
-### Authentication
+## Authentication
 
 All API resources require a valid access token for authentication.
 
 Once you have obtained an access token, you must use HTTP Bearer Authentication, as defined in <a href="https://www.rfc-editor.org/rfc/rfc6750.html" target="_blank">RDC6750</a>, to authenticate when sending requests to the API.
 
-#### Authenticating
+### Authenticating
 To authenticate and obtain the Access Token, you should have the Client Id and Client Secret in hands.
 
 An HTTP GET request should be sent along with the Client Id and Client Secret in order to obtain the access token.
@@ -39,27 +39,36 @@ Response:
 }
 ```
 
-#### Access Token Usage
+### Access Token Usage
 The method for sending as access token is by using an Authorization Request Headr where the access token is sent in the HTTP request header.
 
 ```markdown
 curl -X GET "https://api.ascellahealth.com/v1/client-accounts" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 ```
 
-### HTTP Response
+## HTTP Response
 AscellaHealth API uses conventional HTTP response codes to indicate the success or failure of an API request.
 
 - In general, codes in **2xx** range indicate success.
 - Codes in **4xx** range indicate an error that failed given the information provided (e.g., a required parameter was omitted, resource not found, wrong JSON format, etc.).
 - Some **4xx** errors that could be handled programmatically include an error message that briefly explains the error reported.
-- Codes in the **5xx** range indicate an error with AscellaHealth's servers (there are rare).
+- Codes in the **5xx** range indicate an error with AscellaHealth's servers (these are rare).
 
-####  HTTP Status Code Summary
-- **200 - OK** Everything worked as expected.
-- **400 - Bad Request** The request was unacceptable, often due to missing a required parameter.
-- **401 - Unauthorized** No valid API key provided.
-- **403 - Forbidden** The API key or IP Address doesn't have permissions to perform the request.
-- **404 - Not Found** The requested resource doesn't exist
-- **409 - Conflict** The request conflicts with another request (perhaps due to using the same idempotent key).
-- **429 - Too Many Request** Too many requests hit the API too quickly or quota exceeded.
-- **500,502,503,504 - Server Errors** Something went wrong on AscellaHealth's end (there are rare).
+###  HTTP Status Code Summary
+| Code | Description |
+| --- | --- |
+| **200 - OK** | Everything worked as expected. |
+| **400 - Bad Request** | The request was unacceptable, often due to missing a required parameter. |
+| **401 - Unauthorized** | No valid API key provided. |
+| **403 - Forbidden** | The API key or IP Address doesn't have permissions to perform the request. |
+| **404 - Not Found** | The requested resource doesn't exist |
+| **409 - Conflict** | The request conflicts with another request (perhaps due to using the same idempotent key). |
+| **429 - Too Many Request** | Too many requests hit the API too quickly or quota exceeded. |
+| **500,502,503,504 - Server Errors** | Something went wrong on AscellaHealth's end (these are rare). |
+
+## Limits and Quotas
+This section describes the limits and quotas of requesting the AscellaHealth's APIs.
+
+| Period | Max Requests |
+| --- | --- |
+| **1 second** | 100 |
