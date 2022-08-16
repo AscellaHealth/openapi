@@ -45,3 +45,21 @@ The method for sending as access token is by using an Authorization Request Head
 ```markdown
 curl -X GET "https://api.ascellahealth.com/v1/client-accounts" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 ```
+
+### HTTP Response
+AscellaHealth API uses conventional HTTP response codes to indicate the success or failure of an API request.
+
+- In general, codes in **2xx** range indicate success.
+- Codes in **4xx** range indicate an error that failed given the information provided (e.g., a required parameter was omitted, resource not found, wrong JSON format, etc.).
+- Some **4xx** errors that could be handled programmatically include an error message that briefly explains the error reported.
+- Codes in the **5xx** range indicate an error with AscellaHealth's servers (there are rare).
+
+####  HTTP Status Code Summary
+- **200 - OK** Everything worked as expected.
+- **400 - Bad Request** The request was unacceptable, often due to missing a required parameter.
+- **401 - Unauthorized** No valid API key provided.
+- **403 - Forbidden** The API key or IP Address doesn't have permissions to perform the request.
+- **404 - Not Found** The requested resource doesn't exist
+- **409 - Conflict** The request conflicts with another request (perhaps due to using the same idempotent key).
+- **429 - Too Many Request** Too many requests hit the API too quickly or quota exceeded.
+- **500,502,503,504 - Server Errors** Something went wrong on AscellaHealth's end (there are rare).
