@@ -55,6 +55,7 @@ AscellaHealth API uses conventional HTTP response codes to indicate the success 
 - Codes in the **5xx** range indicate an error with AscellaHealth's servers (these are rare).
 
 ###  HTTP Status Code Summary
+
 | Code | Description |
 | --- | --- |
 | **200 - OK** | Everything worked as expected. |
