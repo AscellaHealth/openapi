@@ -4,9 +4,13 @@ Welcome to the AscellaHealth API.
 
 The AscellaHealth API is REST based, uses JSON data format and is secured with HTTPS.
 
-The base URL is: `https://api.ascellahealth.com/{version}`.
+The base URL is:
+- UAT: `https://uat-api.ascellahealth.com`
+- Production: `https://api.ascellahealth.com`
 
-To see a list of all available endpoints, please refer to our <a href="https://api.ascellahealth.com/swagger/index.html" target="_blank">API Endpoints page</a>. The documentation also lets you "try it out" on each endpoint directly within the page.
+To see a list of all available endpoints, please refer to our API Endpoints page. The documentation also lets you "try it out" on each endpoint directly within the page.
+- <a href="https://uat-api.ascellahealth.com/swagger/index.html" target="_blank">UAT API Endpoints page</a>
+- <a href="https://api.ascellahealth.com/swagger/index.html" target="_blank">Production API Endpoints page</a>
 
 ## Authentication
 
@@ -72,4 +76,4 @@ This section describes the limits and quotas of requesting the AscellaHealth's A
 
 | Period | Max Requests |
 | --- | --- |
-| **1 second** | 100 |
+| **1 minute** | 120 |
