@@ -30,7 +30,11 @@ Using an expired token will cause operations to fail. This value is returned in 
 Request:
 
 ```markdown
-curl -X GET 'https://api.ascellahealth.com/v1/auth?grant_type=client_credentials&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}'
+curl --location 'https://api.ascellahealth.com/v1/connect/token'
+--header 'Content-Type: application/x-www-form-urlencoded'
+--data-urlencode 'grant_type=client_credentials'
+--data-urlencode 'client_id={CLIENT_ID}'
+--data-urlencode 'client_secret={CLIENT_SECRET}'
 ```
 
 Response:
