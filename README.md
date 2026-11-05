@@ -71,9 +71,49 @@ AscellaHealth API uses conventional HTTP response codes to indicate the success 
 | **401 - Unauthorized** | No valid API key provided. |
 | **403 - Forbidden** | The API key or IP Address doesn't have permissions to perform the request. |
 | **404 - Not Found** | The requested resource doesn't exist |
-| **409 - Conflict** | The request conflicts with another request (perhaps due to using the same idempotent key). |
+| **409 - Conflict** | The request conflicts with another request (for example, a request with the same `Idempotency-Key` is still being processed). |
+| **422 - Unprocessable Content** | The `Idempotency-Key` was already used with a different request body. |
 | **429 - Too Many Request** | Too many requests hit the API too quickly or quota exceeded. |
 | **500,502,503,504 - Server Errors** | Something went wrong on AscellaHealth's end (these are rare). |
+
+## Idempotency
+
+Some AscellaHealth API endpoints support idempotency, which lets you retry a request safely after a timeout or network failure without repeating its effect.
+
+Idempotency is enabled **per request**: when you send an `Idempotency-Key` header to an endpoint that supports it, the behavior described in this section applies. If we already processed a request with that key, we return the original response instead of executing it again. Without the header, the endpoint behaves as usual.
+
+Endpoints that support idempotency show the `Idempotency-Key` header as an input field in the API Endpoints (Swagger) page. Endpoints that do not support it ignore the header.
+
+```markdown
+curl -X PUT "https://api.ascellahealth.com/v1/{endpoint}"
+-H "Authorization: Bearer {ACCESS_TOKEN}"
+-H "Content-Type: application/json"
+-H "Idempotency-Key: 3f6c1e52-8a47-4d0b-9b1e-2c5a7d9e4f10"
+-d '{ ...request payload... }'
+```
+
+### Using the key
+
+- Send a unique key per operation, once per request: 8 to 255 visible ASCII characters. We recommend a random UUID v4.
+- To retry, resend the **same key and a byte-identical body**.
+- Keys are scoped to your client account and to the endpoint, and are kept for 24 hours.
+
+### Responses
+
+| Situation | Response |
+| --- | --- |
+| New key | Processed normally. |
+| Same key and body, already completed | Original status and body, with header `Idempotent-Replayed: true`. Nothing is executed again. |
+| Same key, different body | **422** |
+| Same key, first request still running | **409** with `Retry-After` (seconds). Wait, then retry. |
+| Malformed or repeated key | **400** |
+| First attempt failed (4xx or 5xx) | Nothing is stored. Retry with the same key. |
+
+The `400`, `409` and `422` errors are returned as problem details (RFC 9457) with a distinct `type`, so you can tell them apart from the endpoint's own validation errors.
+
+> **Note:** Duplicate protection is best-effort, not an exactly-once guarantee. In rare failure scenarios a retry may still create a duplicate.
+
+> **Rate limits:** Retried, replayed and rejected (409/422) requests count toward the [Limits and Quotas](#limits-and-quotas) like any other request.
 
 ## Limits and Quotas
 This section describes the limits and quotas of requesting the AscellaHealth's APIs.
