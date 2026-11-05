@@ -78,27 +78,25 @@ AscellaHealth API uses conventional HTTP response codes to indicate the success 
 
 ## Idempotency
 
-To retry a request safely after a timeout or network failure, send an `Idempotency-Key` header. If we already processed a request with that key, we return the original response instead of executing it again.
+Some AscellaHealth API endpoints support idempotency, which lets you retry a request safely after a timeout or network failure without repeating its effect.
 
-| Endpoint | Idempotency-Key |
-| --- | --- |
-| `PUT /v1/freshworks/referrals` | Optional |
+Idempotency is enabled **per request**: when you send an `Idempotency-Key` header to an endpoint that supports it, the behavior described in this section applies. If we already processed a request with that key, we return the original response instead of executing it again. Without the header, the endpoint behaves as usual.
 
-Without the header, the endpoint behaves as before. Endpoints not listed here ignore the header. The header is also available as an input field on the endpoint in the API Endpoints (Swagger) page.
+Endpoints that support idempotency show the `Idempotency-Key` header as an input field in the API Endpoints (Swagger) page. Endpoints that do not support it ignore the header.
 
 ```markdown
-curl -X PUT "https://api.ascellahealth.com/v1/freshworks/referrals"
+curl -X PUT "https://api.ascellahealth.com/v1/{endpoint}"
 -H "Authorization: Bearer {ACCESS_TOKEN}"
 -H "Content-Type: application/json"
 -H "Idempotency-Key: 3f6c1e52-8a47-4d0b-9b1e-2c5a7d9e4f10"
--d '{ ...referral payload... }'
+-d '{ ...request payload... }'
 ```
 
 ### Using the key
 
-- Send a unique key per referral, once per request: 8 to 255 visible ASCII characters. We recommend a random UUID v4.
+- Send a unique key per operation, once per request: 8 to 255 visible ASCII characters. We recommend a random UUID v4.
 - To retry, resend the **same key and a byte-identical body**.
-- Keys are scoped to your client account and kept for 24 hours.
+- Keys are scoped to your client account and to the endpoint, and are kept for 24 hours.
 
 ### Responses
 
